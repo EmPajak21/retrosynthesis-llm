@@ -16,10 +16,10 @@ TOOL_SCHEMA = {
     "function": {
         "name": "predict_reactivity",
         "description": (
-            "Predict the nucleophilic and electrophilic reaction sites of a molecule. "
-            "Returns methyl anion affinity (MAA, electrophilicity) and methyl cation affinity "
-            "(MCA, nucleophilicity) values in kJ/mol for each reactive atom. "
-            "Higher MAA = more electrophilic. Higher MCA = more nucleophilic."
+            "Predict nucleophilic and electrophilic reaction sites of a molecule. "
+            "Returns MAA (electrophilicity) and MCA (nucleophilicity) values in kJ/mol "
+            "for all reactive atoms, ranked by activity. The top 3 sites by rank are the "
+            "most chemically significant. Higher MAA = more electrophilic. Higher MCA = more nucleophilic."
         ),
         "parameters": {
             "type": "object",
@@ -36,7 +36,7 @@ TOOL_SCHEMA = {
 
 
 def predict_reactivity(smiles: str) -> dict:
-    """Predict nucleophilic and electrophilic sites for a molecule."""
+    """Predict nucleophilic and electrophilic sites for a molecule, ranked by activity."""
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         return {"error": f"Invalid SMILES: {smiles}"}
@@ -48,22 +48,26 @@ def predict_reactivity(smiles: str) -> dict:
 
     electrophilic = [
         {
+            "rank": i + 1,
             "atom_id": row["Atom ID"],
             "type": row["Type"],
             "MAA_kJ_mol": round(row["MAA Value [kJ/mol]"], 1),
             "estimated_error_kJ_mol": round(row["Est. Error [kJ/mol]"], 1),
+            "top_3": i < 3,
         }
-        for _, row in df_elec.iterrows()
+        for i, (_, row) in enumerate(df_elec.iterrows())
     ]
 
     nucleophilic = [
         {
+            "rank": i + 1,
             "atom_id": row["Atom ID"],
             "type": row["Type"],
             "MCA_kJ_mol": round(row["MCA Value [kJ/mol]"], 1),
             "estimated_error_kJ_mol": round(row["Est. Error [kJ/mol]"], 1),
+            "top_3": i < 3,
         }
-        for _, row in df_nuc.iterrows()
+        for i, (_, row) in enumerate(df_nuc.iterrows())
     ]
 
     return {
