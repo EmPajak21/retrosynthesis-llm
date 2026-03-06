@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# ESNUEL_ML models and binaries (large files - download separately)
+external/ESNUEL_ML/src/esnuelML/models/
+external/ESNUEL_ML/dep/
+external/ESNUEL_ML/models.tar.xz
+
+# ESNUEL_ML calculation outputs
+external/ESNUEL_ML/desc_calcs/*/
+
+# Build
+*.egg-info/
+dist/
+build/
