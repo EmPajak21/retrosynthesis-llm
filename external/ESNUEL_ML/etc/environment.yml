@@ -1,0 +1,15 @@
+name: esnuelML
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - rdkit
+  - numpy
+  - scikit-learn=1.0.1
+  - scipy
+  - seaborn
+  - pandas
+  - tqdm
+  - ipython
+  - lightgbm=3.1.1
