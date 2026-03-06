@@ -43,3 +43,34 @@ python src/esnuelML/predictor.py --smi 'CC(=O)Oc1ccccc1C(=O)O'
 ```bash
 git subtree pull --prefix=external/ESNUEL_ML https://github.com/EmPajak21/ESNUEL_ML.git main --squash
 ```
+
+---
+
+## LocalMapper
+
+Atom-to-atom reaction mapping via human-in-the-loop ML (Nature Communications, 2024).
+Repository: https://github.com/EmPajak21/LocalMapper
+License: CC BY-NC-SA 4.0 (non-commercial use only)
+
+### Setup
+
+```bash
+uv pip install -e "."
+uv pip install -e external/LocalMapper/
+```
+
+### Usage
+
+```python
+from localmapper import localmapper
+mapper = localmapper()
+rxn = 'CC(C)S.CN(C)C=O.Fc1cccnc1F.O=C([O-])[O-].[K+].[K+]>>CC(C)Sc1ncccc1F'
+result = mapper.get_atom_map(rxn, return_dict=True)
+# result: {'rxn': ..., 'mapped_rxn': ..., 'template': ..., 'confident': True}
+```
+
+### Pulling upstream updates
+
+```bash
+git subtree pull --prefix=external/LocalMapper https://github.com/EmPajak21/LocalMapper.git main --squash
+```
